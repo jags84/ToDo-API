@@ -12,13 +12,16 @@
 
 ActiveRecord::Schema.define(version: 20170118150459) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "lists", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "name"
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["user_id"], name: "index_lists_on_user_id"
+    t.index ["user_id"], name: "index_lists_on_user_id", using: :btree
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -26,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170118150459) do
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["list_id"], name: "index_tasks_on_list_id"
+    t.index ["list_id"], name: "index_tasks_on_list_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -36,4 +39,6 @@ ActiveRecord::Schema.define(version: 20170118150459) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "lists", "users"
+  add_foreign_key "tasks", "lists"
 end
